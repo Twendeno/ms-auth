@@ -1,10 +1,7 @@
 package com.twendeno.msauth.user;
 
 import com.twendeno.msauth.jwt.JwtService;
-import com.twendeno.msauth.user.dto.NewPasswordDto;
-import com.twendeno.msauth.user.dto.ResetPasswordDto;
-import com.twendeno.msauth.user.dto.SignInDto;
-import com.twendeno.msauth.user.dto.SignUpDto;
+import com.twendeno.msauth.user.dto.*;
 import com.twendeno.msauth.validation.dto.ValidationDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +68,12 @@ public class UserController {
     @PostMapping(value = "/new-password")
     public void newPassword(@RequestBody NewPasswordDto newPasswordDto) {
         this.userService.newPassword(newPasswordDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/refresh-token")
+    public @ResponseBody Map<String,String> refreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+        return this.jwtService.refreshToken(refreshTokenDto);
     }
 
 }

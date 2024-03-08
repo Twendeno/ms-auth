@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/signin").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/new-password").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/password-reset").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/refresh-token").permitAll()
                                 .anyRequest().authenticated()
 
                 ).sessionManagement(httpSecuritySessionManagementConfigurer ->

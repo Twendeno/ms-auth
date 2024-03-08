@@ -1,7 +1,9 @@
 package com.twendeno.msauth.jwt;
 
+import com.twendeno.msauth.refreshToken.RefreshToken;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.user.UserService;
+import com.twendeno.msauth.user.dto.RefreshTokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -14,9 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
@@ -51,7 +56,14 @@ public class JwtService {
     public Map<String, String> generateToken(String username) {
         User user = this.userService.loadUserByUsername(username);
         this.disableTokens(user);
-        Map<String, String> jwtMap = this.generateJwt(user);
+        Map<String, String> jwtMap = new HashMap<String, String>(this.generateJwt(user));
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .expired(false)
+                .creation(Instant.now())
+                .expiration(Instant.now().plusMillis(30 * 60 * 1000)) // 30 minutes
+                .value(UUID.randomUUID().toString())
+                .build();
 
         Jwt jwt = Jwt
                 .builder()
@@ -59,9 +71,12 @@ public class JwtService {
                 .disable(false)
                 .expired(false)
                 .user(user)
+                .refreshToken(refreshToken)
                 .build();
 
         this.jwtRepository.save(jwt);
+
+        jwtMap.put("refreshToken", refreshToken.getValue());
 
         return jwtMap;
     }
@@ -69,7 +84,7 @@ public class JwtService {
     private Map<String, String> generateJwt(User user) {
 
         final long currentTimeMillis = System.currentTimeMillis();
-        final long expirationTime = currentTimeMillis + 30 * 60 * 1000; // 30 minutes
+        final long expirationTime = currentTimeMillis +  60 * 1000; // 1 minutes
 
         Map<String, Object> claims = Map.of(
                 "name", user.getUsername(),
@@ -129,5 +144,16 @@ public class JwtService {
     @Scheduled(cron = "0 0 0 * * *")
     public void removeUselessJwt() {
         this.jwtRepository.deleteAllByExpiredAndDisable(true, true);
+    }
+
+    public Map<String, String> refreshToken(RefreshTokenDto refreshTokenDto) {
+        Jwt jwt = this.jwtRepository.findByRefreshToken(refreshTokenDto.refreshToken()).orElseThrow(() -> new RuntimeException("Token invalid"));
+
+        if (jwt.getRefreshToken().isExpired() || jwt.getRefreshToken().getExpiration().isBefore(Instant.now())) {
+            throw new RuntimeException("Token expired");
+        }
+
+        this.disableTokens(jwt.getUser());
+        return this.generateToken(jwt.getUser().getEmail());
     }
 }

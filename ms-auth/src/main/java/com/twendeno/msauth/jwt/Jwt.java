@@ -1,12 +1,12 @@
 package com.twendeno.msauth.jwt;
 
 import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.refreshToken.RefreshToken;
 import com.twendeno.msauth.user.User;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Date;
 
 @Setter
 @Getter
@@ -23,5 +23,8 @@ public class Jwt extends AbstractEntity {
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE})
     @JoinColumn(name = "user_uuid")
     private User user;
+
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private RefreshToken refreshToken;
 
 }
