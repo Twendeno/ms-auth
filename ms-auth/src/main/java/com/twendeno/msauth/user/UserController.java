@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class UserController {
 
@@ -43,14 +43,20 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
     public void registerUser(@RequestBody SignUpDto signUpDto) {
-        userService.signUp(signUpDto);
+        this.userService.signUp(signUpDto);
     }
 
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/activation")
     public void activation(@RequestBody ValidationDto validationDto) {
-        userService.activation(validationDto);
+        this.userService.activation(validationDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/signout")
+    public void logout() {
+        this.jwtService.logout();
     }
 
 }

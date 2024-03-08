@@ -31,7 +31,7 @@ public class User extends AbstractEntity implements UserDetails {
     private String password;
     private boolean isEnable = false;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_uuid", referencedColumnName = "uuid"),
             inverseJoinColumns = @JoinColumn(name = "role_uuid", referencedColumnName = "uuid")
@@ -42,7 +42,7 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
                 .collect(Collectors.toList());
     }
 
