@@ -1,7 +1,10 @@
 package com.twendeno.msauth.validation;
 
 import com.twendeno.msauth.user.User;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -9,7 +12,9 @@ import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
+@Slf4j
 @AllArgsConstructor
+@Transactional
 @Service
 public class ValidationService {
 
@@ -47,6 +52,11 @@ public class ValidationService {
     public Validation getValidation(String code){
         return this.validationRepository.findByCode(code)
                 .orElseThrow(() -> new RuntimeException("Invalid code"));
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void deleteExpiredValidations(){
+        this.validationRepository.deleteAllByExpirationBefore(Instant.now());
     }
 
 }

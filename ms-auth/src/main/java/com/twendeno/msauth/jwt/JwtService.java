@@ -1,7 +1,5 @@
-package com.twendeno.msauth.security;
+package com.twendeno.msauth.jwt;
 
-import com.twendeno.msauth.jwt.Jwt;
-import com.twendeno.msauth.jwt.JwtRepository;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.user.UserService;
 import io.jsonwebtoken.Claims;
@@ -16,12 +14,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
@@ -39,7 +35,7 @@ public class JwtService {
 
 
     public Jwt tokenByValue(String token) {
-        return this.jwtRepository.findByValueAndDisableAndExpired(token,false,false).orElseThrow(() -> new RuntimeException("Token not found"));
+        return this.jwtRepository.findByValueAndDisableAndExpired(token, false, false).orElseThrow(() -> new RuntimeException("Token not found"));
     }
 
     private void disableTokens(User user) {
@@ -130,8 +126,8 @@ public class JwtService {
         this.jwtRepository.save(jwt);
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
-    public void removeUselessJwt(){
+    @Scheduled(cron = "0 0 0 * * *")
+    public void removeUselessJwt() {
         this.jwtRepository.deleteAllByExpiredAndDisable(true, true);
     }
 }

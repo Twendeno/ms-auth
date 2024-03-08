@@ -1,14 +1,13 @@
-package com.twendeno.msauth.security;
+package com.twendeno.msauth.securityConfig;
 
 import com.twendeno.msauth.jwt.Jwt;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.jwt.JwtService;
 import com.twendeno.msauth.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

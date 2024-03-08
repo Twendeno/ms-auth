@@ -1,6 +1,5 @@
-package com.twendeno.msauth.config;
+package com.twendeno.msauth.securityConfig;
 
-import com.twendeno.msauth.security.JwtFilter;
 import com.twendeno.msauth.user.UserDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +41,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/signup").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/activation").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/signin").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/new-password").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/password-reset").permitAll()
                                 .anyRequest().authenticated()
 
                 ).sessionManagement(httpSecuritySessionManagementConfigurer ->

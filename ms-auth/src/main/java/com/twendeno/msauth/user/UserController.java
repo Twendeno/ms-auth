@@ -1,6 +1,8 @@
 package com.twendeno.msauth.user;
 
-import com.twendeno.msauth.security.JwtService;
+import com.twendeno.msauth.jwt.JwtService;
+import com.twendeno.msauth.user.dto.NewPasswordDto;
+import com.twendeno.msauth.user.dto.ResetPasswordDto;
 import com.twendeno.msauth.user.dto.SignInDto;
 import com.twendeno.msauth.user.dto.SignUpDto;
 import com.twendeno.msauth.validation.dto.ValidationDto;
@@ -57,6 +59,18 @@ public class UserController {
     @PostMapping(value = "/signout")
     public void logout() {
         this.jwtService.logout();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/password-reset")
+    public void resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+        this.userService.resetPassword(resetPasswordDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/new-password")
+    public void newPassword(@RequestBody NewPasswordDto newPasswordDto) {
+        this.userService.newPassword(newPasswordDto);
     }
 
 }

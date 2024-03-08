@@ -31,7 +31,7 @@ public class User extends AbstractEntity implements UserDetails {
     private String password;
     private boolean isEnable = false;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL, CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_uuid", referencedColumnName = "uuid"),
             inverseJoinColumns = @JoinColumn(name = "role_uuid", referencedColumnName = "uuid")

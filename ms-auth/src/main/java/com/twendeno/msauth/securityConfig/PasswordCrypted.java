@@ -1,4 +1,4 @@
-package com.twendeno.msauth.security;
+package com.twendeno.msauth.securityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -3,6 +3,8 @@ package com.twendeno.msauth.user;
 import com.twendeno.msauth.role.Role;
 import com.twendeno.msauth.role.RoleRepository;
 import com.twendeno.msauth.role.RoleType;
+import com.twendeno.msauth.user.dto.NewPasswordDto;
+import com.twendeno.msauth.user.dto.ResetPasswordDto;
 import com.twendeno.msauth.user.dto.SignUpDto;
 import com.twendeno.msauth.validation.Validation;
 import com.twendeno.msauth.validation.ValidationService;
@@ -63,7 +65,7 @@ public class UserService {
     }
 
     public void activation(ValidationDto validationDto) {
-        Validation validation = this.validationService.getValidation(validationDto.getCode());
+        Validation validation = this.validationService.getValidation(validationDto.code());
 
         if (validation.getExpiration().isBefore(validation.getCreation())) {
             throw new RuntimeException("Validation code has expired");
@@ -78,5 +80,21 @@ public class UserService {
         return this.userRepository
                 .findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with" + username));
+    }
+
+    public void resetPassword(ResetPasswordDto resetPasswordDto) {
+        User user = this.loadUserByUsername(resetPasswordDto.email());
+
+        this.validationService.saveValidation(user);
+    }
+
+    public void newPassword(NewPasswordDto newPasswordDto) {
+        User user = this.loadUserByUsername(newPasswordDto.email());
+        Validation validation= this.validationService.getValidation(newPasswordDto.code());
+
+        if (validation.getUser().getEmail().equals(user.getEmail())) {
+            user.setPassword(passwordEncoder.encode(newPasswordDto.password()));
+            this.userRepository.save(user);
+        }
     }
 }

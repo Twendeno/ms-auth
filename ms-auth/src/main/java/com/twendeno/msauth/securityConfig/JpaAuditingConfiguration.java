@@ -1,4 +1,4 @@
-package com.twendeno.msauth.config;
+package com.twendeno.msauth.securityConfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
