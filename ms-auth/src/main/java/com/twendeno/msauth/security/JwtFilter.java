@@ -1,5 +1,6 @@
 package com.twendeno.msauth.security;
 
+import com.twendeno.msauth.jwt.Jwt;
 import com.twendeno.msauth.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,16 +35,25 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = null;
         boolean isTokenExpired = true;
 
+        Jwt tokenOnDb = null;
+
         String authorization = request.getHeader("Authorization");
 
-        if(authorization != null && authorization.startsWith("Bearer ")) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
+
+            tokenOnDb = this.jwtService.tokenByValue(token);
+
             isTokenExpired = this.jwtService.isTokenExpired(token);
 
             username = this.jwtService.extractUsername(token);
         }
 
-        if (!isTokenExpired && username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (
+                !isTokenExpired
+                        && tokenOnDb.getUser().getEmail().equals(username)
+                        && SecurityContextHolder.getContext().getAuthentication() == null
+        ) {
             UserDetails userDetails = userService.loadUserByUsername(username);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

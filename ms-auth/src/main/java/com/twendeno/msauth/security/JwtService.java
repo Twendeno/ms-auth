@@ -1,5 +1,7 @@
 package com.twendeno.msauth.security;
 
+import com.twendeno.msauth.jwt.Jwt;
+import com.twendeno.msauth.jwt.JwtRepository;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.user.UserService;
 import io.jsonwebtoken.Claims;
@@ -20,11 +22,32 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 @AllArgsConstructor
 public class JwtService {
 
+    public static final String BEARER = "bearer";
     private final String ENCRYPTION_KEY ="c767055c8577301380ee11a870ef6b302c658104e3bac9eece7db8bd4503b486";
+
     private final UserService userService;
+    private final JwtRepository jwtRepository;
+
+
+    public Jwt tokenByValue(String token) {
+        return this.jwtRepository.findByValue(token).orElseThrow(() -> new RuntimeException("Token not found"));
+    }
+
     public Map<String,String> generateToken(String username) {
         User user = this.userService.loadUserByUsername(username);
-        return this.generateJwt(user);
+        Map<String, String> jwtMap = this.generateJwt(user);
+
+        Jwt jwt = Jwt
+                .builder()
+                .value(jwtMap.get(BEARER))
+                .disable(false)
+                .expired(false)
+                .user(user)
+                .build();
+
+        this.jwtRepository.save(jwt);
+
+        return jwtMap;
     }
 
     private Map<String,String> generateJwt(User user) {
@@ -47,7 +70,7 @@ public class JwtService {
                 .signWith(this.getKey(), HS256)
                 .compact();
 
-        return Map.of("bearer", bearer);
+        return Map.of(BEARER, bearer);
     }
 
     private Key getKey() {
@@ -76,4 +99,5 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 }
