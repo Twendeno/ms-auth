@@ -18,7 +18,6 @@ public class NotificationService {
         mail.setSubject("Twendeno - Email Verification");
 
         String message = String.format("Hello %s, \n\n" +
-                "Thank you for signing up with Twendeno. \n\n" +
                 "Your verification code is: %s \n\n" +
                 "This code will expire in 10 minutes. \n\n" +
                 "Thank you, \n" +

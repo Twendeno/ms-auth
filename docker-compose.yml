@@ -6,5 +6,3 @@ services:
     ports:
       - 9025:25
       - 9000:80
-    volumes:
-      - ./smtp4dev:/app/Data

@@ -1,11 +1,13 @@
-package com.twendeno.msauth.user;
+package com.twendeno.msauth.auth;
 
+import com.twendeno.msauth.auth.dto.NewPasswordDto;
+import com.twendeno.msauth.auth.dto.ResetPasswordDto;
+import com.twendeno.msauth.auth.dto.SignUpDto;
 import com.twendeno.msauth.role.Role;
 import com.twendeno.msauth.role.RoleRepository;
 import com.twendeno.msauth.role.RoleType;
-import com.twendeno.msauth.user.dto.NewPasswordDto;
-import com.twendeno.msauth.user.dto.ResetPasswordDto;
-import com.twendeno.msauth.user.dto.SignUpDto;
+import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.UserRepository;
 import com.twendeno.msauth.validation.Validation;
 import com.twendeno.msauth.validation.ValidationService;
 import com.twendeno.msauth.validation.dto.ValidationDto;
@@ -15,13 +17,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
 @Service
-public class UserService {
+public class AuthService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -38,6 +39,11 @@ public class UserService {
             throw new RuntimeException("Invalid email");
         }
 
+        if (signUpDto.password().length() < 12) {
+            throw new RuntimeException("Password must be at least 12 characters");
+        }
+
+
         Optional<User> userFound = userRepository.findByEmail(signUpDto.email());
 
         if (userFound.isPresent()) {
@@ -51,15 +57,21 @@ public class UserService {
         user.setName(signUpDto.name());
         user.setEmail(signUpDto.email());
         user.setPassword(passwordEncoder.encode(signUpDto.password()));
+        user.setRole(signUpDto.role());
 
-        Role roles = roleRepository.findByName(RoleType.ROLE_USER).get();
-        user.setRoles(Collections.singleton(roles));
+        if (user.getRole() != null && signUpDto.role().getName().equals(RoleType.ADMIN)) {
+            signUpDto.role().setName(RoleType.ADMIN);
+            user.setEnable(true);
+        }
 
-        log.info("User: {}", user);
+        Role role = roleRepository.findByName(signUpDto.role().getName()).orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRole(role);
+
         user = userRepository.save(user);
 
-        this.validationService.saveValidation(user);
-
+        if (user.getRole().getName().equals(RoleType.USER)) {
+            this.validationService.saveValidation(user);
+        }
 
 //        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
@@ -90,7 +102,7 @@ public class UserService {
 
     public void newPassword(NewPasswordDto newPasswordDto) {
         User user = this.loadUserByUsername(newPasswordDto.email());
-        Validation validation= this.validationService.getValidation(newPasswordDto.code());
+        Validation validation = this.validationService.getValidation(newPasswordDto.code());
 
         if (validation.getUser().getEmail().equals(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(newPasswordDto.password()));

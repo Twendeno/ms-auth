@@ -6,6 +6,8 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +17,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)

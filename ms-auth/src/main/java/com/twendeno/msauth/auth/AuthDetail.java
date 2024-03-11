@@ -1,8 +1,7 @@
-package com.twendeno.msauth.user;
+package com.twendeno.msauth.auth;
 
-import com.twendeno.msauth.role.RoleRepository;
+import com.twendeno.msauth.user.UserRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @NoArgsConstructor
-public class UserDetail implements UserDetailsService {
+public class AuthDetail implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      return userRepository.findByEmail(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

@@ -12,13 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -44,62 +41,67 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
 
-        // Create initial privileges
-        Privilege readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
-        Privilege writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
-        Privilege deletePrivilege = createPrivilegeIfNotFound("DELETE_PRIVILEGE");
-        Privilege updatePrivilege = createPrivilegeIfNotFound("UPDATE_PRIVILEGE");
-
-        List<Privilege> superAdminPrivileges = Arrays.asList(readPrivilege, writePrivilege, deletePrivilege, updatePrivilege);
-        List<Privilege> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege, updatePrivilege);
-        List<Privilege> userPrivileges = Collections.singletonList(readPrivilege);
-
         // Create initial roles
-       createRoleIfNotFound(RoleType.ROLE_SUPER_ADMIN, superAdminPrivileges);
-       createRoleIfNotFound(RoleType.ROLE_ADMIN, adminPrivileges);
-       createRoleIfNotFound(RoleType.ROLE_USER, userPrivileges);
+        createRoleIfNotFound(RoleType.SUPER_ADMIN);
+        createRoleIfNotFound(RoleType.ADMIN);
+        createRoleIfNotFound(RoleType.USER);
+        createRoleIfNotFound(RoleType.MANAGER);
 
         // Create initial user
-        Role adminRole = roleRepository.findByName(RoleType.ROLE_SUPER_ADMIN).get();
+        Role superAdminRole = roleRepository.findByName(RoleType.SUPER_ADMIN).get();
+        Role adminRole = roleRepository.findByName(RoleType.ADMIN).get();
+
+        List<Privilege> superAdminPrivileges = RoleType.SUPER_ADMIN.getPrivileges().stream()
+                .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), superAdminRole)).toList();
+
+        List<Privilege> adminPrivileges = RoleType.ADMIN.getPrivileges().stream()
+                .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), adminRole)).toList();
+
         User user = new User();
         user.setName("Super Admin");
-        user.setEmail("super-admin@twendeno.com");
+        user.setEmail("superadmin@twendeno.com");
         user.setPassword(passwordEncoder.encode("password"));
-        user.setRoles(List.of(adminRole));
+        user.setRole(superAdminRole);
         user.setEnable(true);
 
-        userRepository.save(user);
+        userRepository.findByEmail(user.getEmail()).ifPresentOrElse(
+                userFound -> {
+                    user.setUuid(userFound.getUuid());
+                    userRepository.save(user);
+                },
+                () -> userRepository.save(user)
+        );
 
         alreadySetup = true;
 
     }
 
     @Transactional
-    Privilege createPrivilegeIfNotFound(String name) {
+    Privilege createPrivilegeIfNotFound(String name, Role role) {
         Privilege privilege = null;
 
-        if (privilegeRepository.findByName(name).isPresent()){
+        if (privilegeRepository.findByName(name).isPresent()) {
             privilege = privilegeRepository.findByName(name).get();
         }
 
         if (privilege == null) {
             privilege = new Privilege();
             privilege.setName(name);
+            privilege.setRole(role);
             privilegeRepository.save(privilege);
         }
         return privilege;
     }
 
     @Transactional
-    void createRoleIfNotFound(RoleType name, Collection<Privilege> privileges) {
+    void createRoleIfNotFound(RoleType name) {
         Role role = null;
-        if (roleRepository.findByName(name).isPresent()){
+        if (roleRepository.findByName(name).isPresent()) {
             role = roleRepository.findByName(name).get();
         }
         if (role == null) {
             role = new Role();
             role.setName(name);
-            role.setPrivileges(privileges);
             roleRepository.save(role);
         }
     }

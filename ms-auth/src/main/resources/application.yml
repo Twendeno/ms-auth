@@ -43,4 +43,5 @@ logging:
     org:
       springframework:
         security: DEBUG
-
+        web: DEBUG
+        hibernate: DEBUG

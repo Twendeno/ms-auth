@@ -1,0 +1,9 @@
+# Ignore All
+*
+
+# Keep
+!ms-auth/*
+!.gitignore
+!.dockerignore
+!Dockerfile
+!docker-compose.yml

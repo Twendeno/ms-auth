@@ -1,6 +1,6 @@
 package com.twendeno.msauth.securityConfig;
 
-import com.twendeno.msauth.user.UserDetail;
+import com.twendeno.msauth.auth.AuthDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/new-password").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/password-reset").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/refresh-token").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/licence").hasAnyAuthority("ROLE_SUPER_ADMIN", "ROLE_ADMIN")
                                 .anyRequest().authenticated()
 
                 ).sessionManagement(httpSecuritySessionManagementConfigurer ->
@@ -55,7 +56,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetail();
+        return new AuthDetail();
     }
 
     @Bean

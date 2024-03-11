@@ -2,7 +2,7 @@ package com.twendeno.msauth.securityConfig;
 
 import com.twendeno.msauth.jwt.Jwt;
 import com.twendeno.msauth.jwt.JwtService;
-import com.twendeno.msauth.user.UserService;
+import com.twendeno.msauth.auth.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -20,7 +21,8 @@ import java.io.IOException;
 @Service
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final UserService userService;
+    private HandlerExceptionResolver handlerExceptionResolver;
+    private final AuthService authService;
     private final JwtService jwtService;
 
     /**
@@ -38,32 +40,37 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Jwt tokenOnDb = null;
 
-        String authorization = request.getHeader("Authorization");
+        try {
 
-        if (authorization != null && authorization.startsWith("Bearer ")) {
-            token = authorization.substring(7);
+            String authorization = request.getHeader("Authorization");
 
-            tokenOnDb = this.jwtService.tokenByValue(token);
+            if (authorization != null && authorization.startsWith("Bearer ")) {
+                token = authorization.substring(7);
 
-            isTokenExpired = this.jwtService.isTokenExpired(token);
+                tokenOnDb = this.jwtService.tokenByValue(token);
 
-            username = this.jwtService.extractUsername(token);
+                isTokenExpired = this.jwtService.isTokenExpired(token);
+
+                username = this.jwtService.extractUsername(token);
+            }
+
+            if (
+                    !isTokenExpired
+                            && tokenOnDb.getUser().getEmail().equals(username)
+                            && SecurityContextHolder.getContext().getAuthentication() == null
+            ) {
+                UserDetails userDetails = authService.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+
+            filterChain.doFilter(request, response);
+        }catch (Exception e){
+            handlerExceptionResolver.resolveException(request, response, null, e);
         }
-
-        if (
-                !isTokenExpired
-                        && tokenOnDb.getUser().getEmail().equals(username)
-                        && SecurityContextHolder.getContext().getAuthentication() == null
-        ) {
-            UserDetails userDetails = userService.loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-
-        filterChain.doFilter(request, response);
     }
 }
