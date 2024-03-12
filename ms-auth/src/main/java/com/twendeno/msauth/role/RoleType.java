@@ -29,14 +29,22 @@ public enum RoleType {
                     PrivilegeType.ADMIN_DELETE
             )
     ),
+    DEV(
+            Set.of(
+                    PrivilegeType.DEV_CREATE,
+                    PrivilegeType.DEV_READ,
+                    PrivilegeType.DEV_UPDATE,
+                    PrivilegeType.DEV_DELETE
+            )
+    ),
     USER(
             Set.of(
                     PrivilegeType.USER_READ
             )
     ),
-    MANAGER(
+    TENANT(
             Set.of(
-                    PrivilegeType.MANAGER_CREATE
+                    PrivilegeType.TENANT_CREATE
             )
     );
 

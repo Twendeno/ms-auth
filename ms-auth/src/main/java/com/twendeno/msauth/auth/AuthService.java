@@ -48,7 +48,6 @@ public class AuthService {
 
         if (userFound.isPresent()) {
 //            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
-            log.info("Email is already taken!");
             throw new RuntimeException("Email is already taken!");
         }
 
@@ -59,8 +58,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(signUpDto.password()));
         user.setRole(signUpDto.role());
 
-        if (user.getRole() != null && signUpDto.role().getName().equals(RoleType.ADMIN)) {
-            signUpDto.role().setName(RoleType.ADMIN);
+        if (user.getRole() != null && !signUpDto.role().getName().equals(RoleType.USER)) {
+            signUpDto.role().setName(signUpDto.role().getName());
             user.setEnable(true);
         }
 

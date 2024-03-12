@@ -1,5 +1,7 @@
 package com.twendeno.msauth;
 
+import com.twendeno.msauth.license.License;
+import com.twendeno.msauth.license.LicenseRepository;
 import com.twendeno.msauth.privilege.Privilege;
 import com.twendeno.msauth.privilege.PrivilegeRepository;
 import com.twendeno.msauth.role.Role;
@@ -23,6 +25,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     boolean alreadySetup = false;
 
     @Autowired
+    private LicenseRepository licenseRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -41,15 +46,19 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             return;
         }
 
-        // Create initial roles
+        // Create initial roles on database
         createRoleIfNotFound(RoleType.SUPER_ADMIN);
         createRoleIfNotFound(RoleType.ADMIN);
         createRoleIfNotFound(RoleType.USER);
-        createRoleIfNotFound(RoleType.MANAGER);
+        createRoleIfNotFound(RoleType.TENANT);
+        createRoleIfNotFound(RoleType.DEV);
 
-        // Create initial user
+        // Create initial privileges on database
         Role superAdminRole = roleRepository.findByName(RoleType.SUPER_ADMIN).get();
         Role adminRole = roleRepository.findByName(RoleType.ADMIN).get();
+        Role userRole = roleRepository.findByName(RoleType.USER).get();
+        Role devRole = roleRepository.findByName(RoleType.DEV).get();
+        Role tenantRole = roleRepository.findByName(RoleType.TENANT).get();
 
         List<Privilege> superAdminPrivileges = RoleType.SUPER_ADMIN.getPrivileges().stream()
                 .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), superAdminRole)).toList();
@@ -57,6 +66,16 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         List<Privilege> adminPrivileges = RoleType.ADMIN.getPrivileges().stream()
                 .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), adminRole)).toList();
 
+        List<Privilege> devPrivilege = RoleType.DEV.getPrivileges().stream()
+                .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), devRole)).toList();
+
+        List<Privilege> userPrivilege = RoleType.USER.getPrivileges().stream()
+                .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), userRole)).toList();
+
+        List<Privilege> tenantPrivilege = RoleType.TENANT.getPrivileges().stream()
+                .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), tenantRole)).toList();
+
+        // Create initial super admin user on database
         User user = new User();
         user.setName("Super Admin");
         user.setEmail("superadmin@twendeno.com");
@@ -71,6 +90,16 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 },
                 () -> userRepository.save(user)
         );
+
+        // Create initial license on database
+        List<License> licenses = List.of(
+                License.builder().name("BASIC").price(0.0f).duration(1).build(),
+                License.builder().name("PRO").price(10.0f).duration(3).build(),
+                License.builder().name("ENTERPRISE").price(20.0f).duration(12).build()
+        );
+
+        licenseRepository.saveAll(licenses);
+
 
         alreadySetup = true;
 
