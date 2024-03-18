@@ -1,6 +1,7 @@
 package com.twendeno.msauth.validation;
 
 import com.twendeno.msauth.license.License;
+import com.twendeno.msauth.shared.Utils;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.userLicense.UserLicense;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,17 @@ import java.util.Locale;
 public class NotificationService {
 
     public static final String NO_REPLY_TWENDENO_COM = "no-reply@twendeno.com";
+    public static final String SIGNATURE = """
+            -----------------------------------
+            Thank you,\s
+            Twendeno Team\s
+            
+            Contact:
+            Email: support@twendeno.com
+            Phone: +250 78 123 4567
+            Address: Pointe-noire, Congo
+            """;
+
     private final JavaMailSender javaMailSender;
 
     public void sendEmail(Validation validation){
@@ -76,14 +88,16 @@ public class NotificationService {
                         Here is the information for the machine on which you activated your license\s
 
                         %s
-                        Please contact the support team if you are not the originator of this action.
-
-                        Twendeno Team""",
+                        Please contact the support team if you are not the originator of this action.\s
+                        
+                        """,
                 userLicense.getUser().getName(),
                 userLicense.getLicense().getDuration(),
                 formattedDateTime,
-                this.getMachineInfo()
+                Utils.getMachineInfo()
         );
+
+        message += SIGNATURE;
 
         mail.setText(message);
 
@@ -109,15 +123,16 @@ public class NotificationService {
 
                         Your licence key is on the attached file\s
 
-                        Please communicate this to anyone\s
+                        Please communicate this to anyone.\s
+                        
+                        """, user.getName(),license.getName());
 
-                        Thank you,\s
-                        Twendeno Team""", user.getName(),license.getName());
+                message += SIGNATURE;
 
                 helper.setText(message);
 
                 ByteArrayResource inputStream = new ByteArrayResource(key.getBytes(StandardCharsets.UTF_8));
-                helper.addAttachment("license.txt", inputStream,"text/plain");
+                helper.addAttachment("license.tw", inputStream,"text/plain");
 
 
             } catch (Exception e) {
@@ -132,19 +147,4 @@ public class NotificationService {
         }
     }
 
-    private String getMachineInfo(){
-        StringBuilder sb = new StringBuilder();
-        try {
-            InetAddress ip = InetAddress.getLocalHost();
-            sb.append("Host Name: ").append(ip.getHostName()).append("\n");
-            sb.append("IP Address: ").append(ip.getHostAddress()).append("\n");
-            sb.append("Os: ").append(System.getProperty("os.name")).append("\n");
-            System.out.println(ip.toString());
-
-        }catch (UnknownHostException e){
-            throw new RuntimeException(e);
-        }
-
-        return sb.toString();
-    }
 }

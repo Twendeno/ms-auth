@@ -58,18 +58,19 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(signUpDto.password()));
         user.setRole(signUpDto.role());
 
-        if (user.getRole() != null && !signUpDto.role().getName().equals(RoleType.USER)) {
-            signUpDto.role().setName(signUpDto.role().getName());
-            user.setEnable(true);
-        }
-
         Role role = roleRepository.findByName(signUpDto.role().getName()).orElseThrow(() -> new RuntimeException("Role not found"));
         user.setRole(role);
 
+        switch (signUpDto.role().getName()){
+            case USER, DEV -> user.setEnable(false);
+
+            default -> user.setEnable(true);
+        }
+
         user = userRepository.save(user);
 
-        if (user.getRole().getName().equals(RoleType.USER)) {
-            this.validationService.saveValidation(user);
+        switch (signUpDto.role().getName()){
+            case USER, DEV -> this.validationService.saveValidation(user);
         }
 
 //        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);

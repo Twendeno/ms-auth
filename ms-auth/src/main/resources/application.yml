@@ -6,15 +6,15 @@ spring:
   # Security configuration
   security:
     user:
-      name: admin
-      password: admin
+      name: ${ADMIN_USERNAME}
+      password: ${ADMIN_PASSWORD}
 
   # Database configuration
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/msAuth
-    username: postgres
-    password: root
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
   # JPA properties
   jpa:
@@ -33,7 +33,7 @@ spring:
 
 # Server configuration
 server:
-  port: 8080
+  port: ${SERVER_PORT}
   servlet:
     context-path: /api/v1
 
