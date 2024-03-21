@@ -42,6 +42,12 @@ public enum RoleType {
                     PrivilegeType.USER_READ
             )
     ),
+    SELLER(
+            Set.of(
+                    PrivilegeType.SELLER_CREATE,
+                    PrivilegeType.SELLER_READ
+            )
+    ),
     TENANT(
             Set.of(
                     PrivilegeType.TENANT_CREATE

@@ -1,0 +1,63 @@
+# User
+
+POST http://localhost:8080/api/v1/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "jd@mail.com",
+  "password": "password1234",
+  "role": {
+    "name": "USER"
+  }
+}
+
+###
+
+# Admin
+
+POST http://localhost:8080/api/v1/signup
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "email": "admin@mail.com",
+  "password": "password1234",
+  "role": {
+    "name": "ADMIN"
+  }
+}
+
+###
+
+# Tenant
+
+POST http://localhost:8080/api/v1/signup
+Content-Type: application/json
+
+{
+  "name": "tenant",
+  "email": "tenant@mail.com",
+  "password": "password1234",
+  "role": {
+    "name": "TENANT"
+  }
+}
+
+###
+
+# Dev
+
+POST http://localhost:8080/api/v1/signup
+Content-Type: application/json
+
+{
+  "name": "dev",
+  "email": "dev@mail.com",
+  "password": "password1234",
+  "role": {
+    "name": "DEV"
+  }
+}
+
+###

@@ -1,0 +1,43 @@
+# All roles
+
+GET http://localhost:8080/api/v1/roles
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzEwNDIwMzQ4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.YGSIbA653u4f3ZHqSgHoP8b-0dALuFbYUVKBPer7KU8
+
+
+####
+
+# Get role by id
+
+GET http://localhost:8080/api/v1/roles/e6763c83-3bf7-47dd-89f1-ac74bb66e67b
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzEwNDIwMzQ4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.YGSIbA653u4f3ZHqSgHoP8b-0dALuFbYUVKBPer7KU8
+
+
+###
+
+# Create role
+
+POST http://localhost:8080/api/v1/roles
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzEwNDIwMzQ4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.YGSIbA653u4f3ZHqSgHoP8b-0dALuFbYUVKBPer7KU8
+
+{
+  "name": "driver"
+}
+
+###
+
+# update role
+
+PUT http://localhost:8080/api/v1/roles/759f4885-50ce-4f85-b978-e632f68ad713
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzEwNDIwMzQ4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.YGSIbA653u4f3ZHqSgHoP8b-0dALuFbYUVKBPer7KU8
+
+{
+  "name": "SA"
+}
+
+###

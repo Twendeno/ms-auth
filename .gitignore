@@ -1,10 +1,4 @@
-# Ignore All
-*
 
-# Keep
-!ms-auth/*
-!.gitignore
-!.dockerignore
-!Dockerfile
-!docker-compose.yml
-!.env-example
+# Ignore
+.env
+.idea

@@ -1,0 +1,27 @@
+# Get all users
+
+GET http://localhost:8080/api/v1/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwibmFtZSI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwic3ViIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJleHAiOjE3MTA0MTQwNDZ9.ZUo8Mye11NxC0D0dkGVQkcBRcXQ6I-pKX75Jyez2gKc
+
+###
+
+# Get user by user uuid
+
+GET http://localhost:8080/api/v1/users/69b638cd-1d8c-4172-8da5-fa8ba005543c
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwibmFtZSI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwic3ViIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJleHAiOjE3MTA0MTQwNDZ9.ZUo8Mye11NxC0D0dkGVQkcBRcXQ6I-pKX75Jyez2gKc
+
+###
+
+# Update user by user uuid
+
+PUT http://localhost:8080/api/v1/users/69b638cd-1d8c-4172-8da5-fa8ba005543c
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTA0MTE3MzgsImVtYWlsIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.fS1Ta1Uqdd07XOvufTmm13Qs-rTt1mOMWmKx86TZysc
+
+{
+  "name": "Sup Ad"
+}
+
+###

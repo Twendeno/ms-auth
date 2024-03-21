@@ -1,0 +1,34 @@
+POST http://localhost:8080/api/v1/activation
+Content-Type: application/json
+
+{
+  "code": "060979"
+}
+
+###
+
+# Activate user license
+
+POST http://localhost:8080/api/v1/user-licenses/activate
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVuYW50QG1haWwuY29tIiwiZW1haWwiOiJ0ZW5hbnRAbWFpbC5jb20iLCJleHAiOjE3MTA3NzMxOTQsInN1YiI6InRlbmFudEBtYWlsLmNvbSJ9.OcpS0zR7tyfaFOBB9K6TPvrD7GLTgCkagShNODDt83A
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="license.tw"
+
+< C:\Users\Styve LIOUMBA\Downloads\license.tw
+--WebAppBoundary--
+
+###
+
+# Activate ticket (scan)
+
+POST http://localhost:8080/api/v1/ticket-generate/activate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsImV4cCI6MTcxMTAxOTUxNiwiZW1haWwiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsIm5hbWUiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.TM36M8uK_8cn1h9vJ66fZXAQrlHzOw0Nez0aNFdDGyI
+
+{
+  "reference": "Ryd5WwlwY5"
+}
+
+###
