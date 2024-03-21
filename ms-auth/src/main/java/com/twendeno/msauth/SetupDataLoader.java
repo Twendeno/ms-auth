@@ -7,6 +7,8 @@ import com.twendeno.msauth.privilege.PrivilegeRepository;
 import com.twendeno.msauth.role.Role;
 import com.twendeno.msauth.role.RoleRepository;
 import com.twendeno.msauth.role.RoleType;
+import com.twendeno.msauth.ticket.TicketRepository;
+import com.twendeno.msauth.ticket.entity.Ticket;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,9 @@ import java.util.List;
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     boolean alreadySetup = false;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @Autowired
     private LicenseRepository licenseRepository;
@@ -91,7 +96,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 () -> userRepository.save(user)
         );
 
-        // Create initial license on database
+        // Create initial licenses on database
         List<License> licenses = List.of(
                 License.builder().name("BASIC").price(0.0f).duration(1).build(),
                 License.builder().name("PRO").price(10.0f).duration(3).build(),
@@ -99,6 +104,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         );
 
         licenseRepository.saveAll(licenses);
+
+
+        // Create initial tickets on database
+        List<Ticket> tickets = List.of(
+                Ticket.builder().name("EXPRESS").price(0.0f).duration(1).build(),
+                Ticket.builder().name("PERFUSION").price(20.0f).duration(24).build()
+        );
+
+        ticketRepository.saveAll(tickets);
 
 
         alreadySetup = true;
