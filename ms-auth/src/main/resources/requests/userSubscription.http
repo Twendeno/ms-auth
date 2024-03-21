@@ -1,0 +1,21 @@
+# Create user subscription
+
+POST http://localhost:8080/api/v1/user-subscription
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTEwNDA2MzksImVtYWlsIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.9MoCZv7amZjiyxzJEqfQf2ErNkS0wnBtxW6R3iIVUvY
+
+{
+  "email": "superadmin@twendeno.com",
+  "subscriptionName": "pro"
+}
+
+###
+
+# Get User subscription
+
+GET http://localhost:8080/api/v1/user-subscription
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTEwNDA2MzksImVtYWlsIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.9MoCZv7amZjiyxzJEqfQf2ErNkS0wnBtxW6R3iIVUvY
+
+
+###
