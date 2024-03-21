@@ -1,0 +1,57 @@
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "jd@mail.com",
+  "password": "password1234"
+}
+
+###
+
+
+# SUPER ADMIN
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "superadmin@twendeno.com",
+  "password": "password"
+}
+
+###
+
+
+# ADMIN
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "admin@mail.com",
+  "password": "password1234"
+}
+
+###
+
+
+# TENANT
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "tenant@mail.com",
+  "password": "password1234"
+}
+
+###
+
+
+# DEV
+POST http://localhost:8080/api/v1/signin
+Content-Type: application/json
+
+{
+  "username": "dev@mail.com",
+  "password": "password1234"
+}
+
+###

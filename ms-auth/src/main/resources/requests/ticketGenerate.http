@@ -1,0 +1,30 @@
+# Generate Ticket
+
+POST http://localhost:8080/api/v1/ticket-generate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsImV4cCI6MTcxMTAxOTUxNiwiZW1haWwiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsIm5hbWUiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.TM36M8uK_8cn1h9vJ66fZXAQrlHzOw0Nez0aNFdDGyI
+
+{
+  "email": "superadmin@twendeno.com",
+  "ticketName": "express",
+  "count": 2
+}
+
+###
+
+# Get Ticket generate
+
+GET http://localhost:8080/api/v1/ticket-generate
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsImV4cCI6MTcxMTAxOTUxNiwiZW1haWwiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsIm5hbWUiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.TM36M8uK_8cn1h9vJ66fZXAQrlHzOw0Nez0aNFdDGyI
+
+
+###
+# Get Ticket generate
+
+GET http://localhost:8080/api/v1/ticket-generate/Ryd5WwlwY5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsImV4cCI6MTcxMTAxOTUxNiwiZW1haWwiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsIm5hbWUiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.TM36M8uK_8cn1h9vJ66fZXAQrlHzOw0Nez0aNFdDGyI
+
+
+###
