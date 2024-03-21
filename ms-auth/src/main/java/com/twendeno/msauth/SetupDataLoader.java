@@ -7,6 +7,8 @@ import com.twendeno.msauth.privilege.PrivilegeRepository;
 import com.twendeno.msauth.role.Role;
 import com.twendeno.msauth.role.RoleRepository;
 import com.twendeno.msauth.role.RoleType;
+import com.twendeno.msauth.subscription.SubscriptionRepository;
+import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.ticket.TicketRepository;
 import com.twendeno.msauth.ticket.entity.Ticket;
 import com.twendeno.msauth.user.User;
@@ -25,6 +27,9 @@ import java.util.List;
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     boolean alreadySetup = false;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -114,6 +119,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
         ticketRepository.saveAll(tickets);
 
+        // Create initial subscription on database
+        List<Subscription> subscriptions = List.of(
+                Subscription.builder().name("BASIC").price(10.0f).duration(1).build(),
+                Subscription.builder().name("PRO").price(20.0f).duration(3).build(),
+                Subscription.builder().name("ENTERPRISE").price(30.0f).duration(12).build()
+        );
+
+        subscriptionRepository.saveAll(subscriptions);
 
         alreadySetup = true;
 

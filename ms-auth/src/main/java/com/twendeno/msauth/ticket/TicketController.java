@@ -29,25 +29,25 @@ public class TicketController {
 
     @GetMapping("/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket getTicket(@PathVariable("name")String name) {
+    public Ticket getTicket(@PathVariable("name") String name) {
         return ticketService.findByName(name);
     }
 
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTicket(@PathVariable("uuid")String uuid) {
+    public void deleteTicket(@PathVariable("uuid") String uuid) {
         ticketService.deleteById(uuid);
     }
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket getTicketById(@PathVariable("uuid")String uuid) {
+    public Ticket getTicketById(@PathVariable("uuid") String uuid) {
         return ticketService.findById(uuid);
     }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket updateTicket(@RequestBody UpdateTicketDto ticketDto, @PathVariable("uuid")String uuid) {
+    public Ticket updateTicket(@RequestBody UpdateTicketDto ticketDto, @PathVariable("uuid") String uuid) {
         return ticketService.update(ticketDto, uuid);
     }
 }

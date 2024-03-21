@@ -36,8 +36,20 @@ public class Utils {
 
     public static String generateTicketReference() {
         SecureRandom random = new SecureRandom();
-        int length = 10;
+        int length = 12;
         String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$&*!@";
+        StringBuilder reference = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            reference.append(characters.charAt(random.nextInt(characters.length())));
+        }
+
+        return reference.toString();
+    }
+    public static String generateSubscriptionReference() {
+        SecureRandom random = new SecureRandom();
+        int length = 10;
+        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         StringBuilder reference = new StringBuilder(length);
 
         for (int i = 0; i < length; i++) {

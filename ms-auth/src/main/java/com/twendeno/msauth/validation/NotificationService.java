@@ -2,11 +2,11 @@ package com.twendeno.msauth.validation;
 
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.shared.Utils;
+import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.userLicense.UserLicense;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,10 +14,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -105,7 +101,7 @@ public class NotificationService {
 
     }
 
-    public void sendMailWithAttachment(User user, String key, License license){
+    public void sendMailForLicenseWithAttachment(User user, String key, License license){
 
         MimeMessagePreparator preparator = mimeMessage -> {
             try {
@@ -133,6 +129,45 @@ public class NotificationService {
 
                 ByteArrayResource inputStream = new ByteArrayResource(key.getBytes(StandardCharsets.UTF_8));
                 helper.addAttachment("license.tw", inputStream,"text/plain");
+
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        try {
+            javaMailSender.send(preparator);
+        } catch (MailException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendMailForSubscriptionWithAttachment(User user, Subscription subscription){
+
+        MimeMessagePreparator preparator = mimeMessage -> {
+            try {
+
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8"); // Activer le mode multipart
+
+                helper.setFrom(NO_REPLY_TWENDENO_COM);
+                helper.setTo(user.getEmail());
+                helper.setSubject("TWENDENO - Subscription");
+
+                String message = String.format("""
+                        Hello %s,\s
+
+                        You have subscribed to the %s subscription\s
+
+                        which offers you unlimited access for %s month(s)\s
+
+                        on all transports in the TWENDENO network.\s
+                        
+                        """, user.getName(),subscription.getName(),subscription.getDuration());
+
+                message += SIGNATURE;
+
+                helper.setText(message);
 
 
             } catch (Exception e) {

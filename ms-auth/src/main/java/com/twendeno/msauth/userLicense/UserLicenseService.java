@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,7 +53,7 @@ public class UserLicenseService {
         UserLicense saved = this.userLicenseRepository.save(userLicense);
 
         // Send notification
-        this.notificationService.sendMailWithAttachment(user, licenseKey,license);
+        this.notificationService.sendMailForLicenseWithAttachment(user, licenseKey,license);
     }
 
     public List<UserLicense> getUserLicense() {
@@ -67,24 +68,42 @@ public class UserLicenseService {
         // get license
         License license = userLicense.getLicense();
 
+        if (userLicense.getExpiration() != null) {
+
+            Date expirationDate = Date.from(userLicense.getExpiration());
+            boolean before = expirationDate.before(new Date());
+
+            if (before) {
+                userLicense.setExpired(true);
+                this.userLicenseRepository.save(userLicense);
+                return;
+            }
+        }
+
         // set active
         userLicense.setActive(true);
 
-        // set creation
-        Instant creation = Instant.now();
-        userLicense.setActivation(creation);
+        if (userLicense.getExpiration() == null || userLicense.getActivation() == null) {
 
-        // set expiration
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(creation, ZoneId.systemDefault());
-        localDateTime = localDateTime.plusMonths(license.getDuration());
+            // set creation
+            Instant creation = Instant.now();
+            userLicense.setActivation(creation);
 
-        Instant expiration = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        userLicense.setExpiration(expiration);
+            // set expiration
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(creation, ZoneId.systemDefault());
+            localDateTime = localDateTime.plusMonths(license.getDuration());
+
+            Instant expiration = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+            userLicense.setExpiration(expiration);
+
+        }
 
         this.userLicenseRepository.save(userLicense);
 
-        // Set Notification
-        this.notificationService.sendActivationEmail(userLicense);
+        if (userLicense.getExpiration() == null || userLicense.getActivation() == null){
+            // Set Notification
+            this.notificationService.sendActivationEmail(userLicense);
+        }
     }
 
 
