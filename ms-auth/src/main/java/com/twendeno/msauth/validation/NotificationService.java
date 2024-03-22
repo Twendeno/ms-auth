@@ -4,7 +4,7 @@ import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.shared.Utils;
 import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.user.User;
-import com.twendeno.msauth.userLicense.UserLicense;
+import com.twendeno.msauth.userLicense.entity.UserLicense;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailException;
@@ -62,7 +62,7 @@ public class NotificationService {
     public void sendActivationEmail(UserLicense userLicense){
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom(NO_REPLY_TWENDENO_COM);
-        mail.setTo(userLicense.getUser().getEmail());
+        mail.setTo(userLicense.getBusiness().getUser().getEmail());
         mail.setSubject("TWENDENO - License Activation");
 
         // Parse the date-time string
@@ -87,7 +87,7 @@ public class NotificationService {
                         Please contact the support team if you are not the originator of this action.\s
                         
                         """,
-                userLicense.getUser().getName(),
+                userLicense.getBusiness().getUser().getName(),
                 userLicense.getLicense().getDuration(),
                 formattedDateTime,
                 Utils.getMachineInfo()

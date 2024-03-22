@@ -1,14 +1,15 @@
 package com.twendeno.msauth.userLicense;
 
+import com.twendeno.msauth.business.BusinessRepository;
+import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.license.LicenseRepository;
 import com.twendeno.msauth.user.User;
-import com.twendeno.msauth.user.UserRepository;
 import com.twendeno.msauth.userLicense.dto.ActivateLicenseDto;
 import com.twendeno.msauth.userLicense.dto.UserLicenseDto;
+import com.twendeno.msauth.userLicense.entity.UserLicense;
 import com.twendeno.msauth.validation.NotificationService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,13 +31,16 @@ public class UserLicenseService {
 
     private final UserLicenseRepository userLicenseRepository;
     private final LicenseRepository licenseRepository;
-    private final UserRepository userRepository;
+    private final BusinessRepository businessRepository;
     private final NotificationService notificationService;
 
     public void save(UserLicenseDto userLicenseDto) {
 
-        // Check if the user exists
-        User user = this.userRepository.findByEmail(userLicenseDto.email()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Check if the business exists
+        Business business = this.businessRepository.findByName(userLicenseDto.businessName()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Get the user
+        User user = business.getUser();
 
         // Check if the license exists
         License license = this.licenseRepository.findByName(userLicenseDto.licenseName()).orElseThrow(() -> new RuntimeException("License not found"));
@@ -45,7 +49,7 @@ public class UserLicenseService {
         String licenseKey = this.generateLicenseKey();
 
         UserLicense userLicense = UserLicense.builder()
-                .user(user)
+                .business(business)
                 .license(license)
                 .key(licenseKey)
                 .build();
@@ -53,7 +57,7 @@ public class UserLicenseService {
         UserLicense saved = this.userLicenseRepository.save(userLicense);
 
         // Send notification
-        this.notificationService.sendMailForLicenseWithAttachment(user, licenseKey,license);
+        this.notificationService.sendMailForLicenseWithAttachment(user, licenseKey, license);
     }
 
     public List<UserLicense> getUserLicense() {
@@ -100,7 +104,7 @@ public class UserLicenseService {
 
         this.userLicenseRepository.save(userLicense);
 
-        if (userLicense.getExpiration() == null || userLicense.getActivation() == null){
+        if (userLicense.getExpiration() == null || userLicense.getActivation() == null) {
             // Set Notification
             this.notificationService.sendActivationEmail(userLicense);
         }
@@ -145,7 +149,7 @@ public class UserLicenseService {
 
         StringBuilder content = new StringBuilder();
 
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 content.append(line);
