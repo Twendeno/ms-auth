@@ -2,10 +2,10 @@
 
 POST http://localhost:8080/api/v1/user-licenses
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVuYW50QG1haWwuY29tIiwiZW1haWwiOiJ0ZW5hbnRAbWFpbC5jb20iLCJleHAiOjE3MTA3NzMxOTQsInN1YiI6InRlbmFudEBtYWlsLmNvbSJ9.OcpS0zR7tyfaFOBB9K6TPvrD7GLTgCkagShNODDt83A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTE5ODU4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.SDOu-UPQObK4QPdZDBITl5HWcRJTWXcWfL-nPKYmttY
 
 {
-  "email": "superadmin@twendeno.com",
+  "businessName": "twendeno",
   "licenseName": "pro"
 }
 
@@ -15,7 +15,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVuYW50QG1haWwuY29tIiwiZ
 
 GET http://localhost:8080/api/v1/user-licenses
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSIsImV4cCI6MTcxMDI1OTA0MywiZW1haWwiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.ab-QI8qaBLPkywocW62Dl7NKMLs2p5iwlvrcE6RDkLc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTE5ODU4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.SDOu-UPQObK4QPdZDBITl5HWcRJTWXcWfL-nPKYmttY
 
 
 ###

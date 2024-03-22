@@ -8,6 +8,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +21,17 @@ import java.util.Map;
 public class ApplicationControllerAdvice {
 
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public @ResponseBody ProblemDetail methodArgumentNotValidException(LockedException e) {
+
+        log.error("MethodArgumentNotValidException: {}", e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "Check your email to activate your account.");
+        problemDetail.setProperty("error", "Account locked");
+
+        return problemDetail;
+    }
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = LockedException.class)
     public @ResponseBody ProblemDetail lockedException(LockedException e) {

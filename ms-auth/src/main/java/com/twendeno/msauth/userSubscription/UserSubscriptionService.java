@@ -1,13 +1,10 @@
 package com.twendeno.msauth.userSubscription;
 
-import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.shared.Utils;
 import com.twendeno.msauth.subscription.SubscriptionRepository;
 import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.user.User;
 import com.twendeno.msauth.user.UserRepository;
-import com.twendeno.msauth.userLicense.UserLicense;
-import com.twendeno.msauth.userLicense.dto.ActivateLicenseDto;
 import com.twendeno.msauth.userSubscription.dto.ActivateUserSubscriptionDto;
 import com.twendeno.msauth.userSubscription.dto.CreateUserSubscriptionDto;
 import com.twendeno.msauth.userSubscription.entity.UserSubscription;

@@ -1,9 +1,9 @@
-package com.twendeno.msauth.userLicense;
+package com.twendeno.msauth.userLicense.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.model.AbstractEntity;
-import com.twendeno.msauth.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,9 +18,9 @@ import java.time.Instant;
 public class UserLicense extends AbstractEntity {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
+    @JoinColumn(name = "business_uuid", referencedColumnName = "uuid", nullable = false)
     @JsonIgnore
-    private User user;
+    private Business business;
 
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})

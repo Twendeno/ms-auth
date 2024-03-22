@@ -2,6 +2,7 @@ package com.twendeno.msauth.userLicense;
 
 import com.twendeno.msauth.userLicense.dto.ActivateLicenseDto;
 import com.twendeno.msauth.userLicense.dto.UserLicenseDto;
+import com.twendeno.msauth.userLicense.entity.UserLicense;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

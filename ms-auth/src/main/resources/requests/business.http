@@ -1,0 +1,20 @@
+GET http://localhost:8080/api/v1/business
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTE5ODU4LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.SDOu-UPQObK4QPdZDBITl5HWcRJTWXcWfL-nPKYmttY
+
+###
+
+POST http://localhost:8080/api/v1/business
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTMyNDc1LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.8Fxl3oKU7uNi1Z7d8IGnk7zRrLWwBr-Yr-L9l0TE0GQ
+
+{
+  "name": "twendeno",
+  "email": "superadmin@twendeno.com",
+  "address": "centre ville",
+  "city": "Pointe-Noire",
+  "country": "Rep. Congo",
+  "phone": "066666666"
+}
+
+###
