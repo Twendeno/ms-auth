@@ -1,6 +1,7 @@
 package com.twendeno.msauth.user;
 
 import com.twendeno.msauth.user.dto.UserUpdateDto;
+import com.twendeno.msauth.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

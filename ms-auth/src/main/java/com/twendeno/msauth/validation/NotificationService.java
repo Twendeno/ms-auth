@@ -3,7 +3,7 @@ package com.twendeno.msauth.validation;
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.shared.Utils;
 import com.twendeno.msauth.subscription.entity.Subscription;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.userLicense.entity.UserLicense;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;

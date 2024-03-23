@@ -2,7 +2,7 @@ package com.twendeno.msauth.business.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.twendeno.msauth.model.AbstractEntity;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

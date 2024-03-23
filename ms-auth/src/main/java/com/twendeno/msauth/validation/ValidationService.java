@@ -1,6 +1,6 @@
 package com.twendeno.msauth.validation;
 
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

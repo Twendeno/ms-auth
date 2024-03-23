@@ -2,11 +2,9 @@ package com.twendeno.msauth.jwt;
 
 import com.twendeno.msauth.model.AbstractEntity;
 import com.twendeno.msauth.refreshToken.RefreshToken;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 
 @Setter
 @Getter

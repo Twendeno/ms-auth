@@ -3,7 +3,7 @@ package com.twendeno.msauth.business;
 import com.twendeno.msauth.business.dto.CreateBusinessDto;
 import com.twendeno.msauth.business.dto.UpdateBusinessDto;
 import com.twendeno.msauth.business.entity.Business;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.user.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

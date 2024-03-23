@@ -1,4 +1,4 @@
-package com.twendeno.msauth.user;
+package com.twendeno.msauth.user.entity;
 
 
 import com.twendeno.msauth.model.AbstractEntity;

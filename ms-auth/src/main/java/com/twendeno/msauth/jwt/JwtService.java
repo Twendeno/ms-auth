@@ -1,7 +1,7 @@
 package com.twendeno.msauth.jwt;
 
 import com.twendeno.msauth.refreshToken.RefreshToken;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.auth.AuthService;
 import com.twendeno.msauth.auth.dto.RefreshTokenDto;
 import io.jsonwebtoken.Claims;
