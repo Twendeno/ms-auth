@@ -1,6 +1,7 @@
 package com.twendeno.msauth.user;
 
 import com.twendeno.msauth.user.dto.UserUpdateDto;
+import com.twendeno.msauth.user.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

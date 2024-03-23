@@ -4,7 +4,7 @@ import com.twendeno.msauth.business.BusinessRepository;
 import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.license.LicenseRepository;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.userLicense.dto.ActivateLicenseDto;
 import com.twendeno.msauth.userLicense.dto.UserLicenseDto;
 import com.twendeno.msauth.userLicense.entity.UserLicense;

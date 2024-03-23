@@ -3,7 +3,7 @@ package com.twendeno.msauth.userSubscription;
 import com.twendeno.msauth.shared.Utils;
 import com.twendeno.msauth.subscription.SubscriptionRepository;
 import com.twendeno.msauth.subscription.entity.Subscription;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.user.UserRepository;
 import com.twendeno.msauth.userSubscription.dto.ActivateUserSubscriptionDto;
 import com.twendeno.msauth.userSubscription.dto.CreateUserSubscriptionDto;

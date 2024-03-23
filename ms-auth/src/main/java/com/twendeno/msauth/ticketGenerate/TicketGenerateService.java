@@ -6,7 +6,7 @@ import com.twendeno.msauth.ticket.entity.Ticket;
 import com.twendeno.msauth.ticketGenerate.dto.ActivateTicketGenerateDto;
 import com.twendeno.msauth.ticketGenerate.dto.CreateTicketGenerateDto;
 import com.twendeno.msauth.ticketGenerate.entity.TicketGenerate;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

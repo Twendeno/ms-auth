@@ -1,0 +1,61 @@
+GET http://localhost:8080/api/v1/heritage
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTkyNjE3LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.6VQSRCq8Zt_YzUHNHPfgs3B5TpYrGolUI2NprdfXYCw
+
+
+###
+
+POST http://localhost:8080/api/v1/heritage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTkyNjE3LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.6VQSRCq8Zt_YzUHNHPfgs3B5TpYrGolUI2NprdfXYCw
+
+
+{
+  "businessName": "twendeno",
+  "userEmail": "superadmin@twendeno.com",
+  "matriculation": "256 LK 06",
+  "brand": "Toyota",
+  "model": "Corolla",
+  "mileage": "150000"
+}
+
+
+###
+
+PUT http://localhost:8080/api/v1/heritage/8a3a0497-152e-41f5-9e50-93a7f776872d
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoic3VwZXJhZG1pbkB0d2VuZGVuby5jb20iLCJlbWFpbCI6InN1cGVyYWRtaW5AdHdlbmRlbm8uY29tIiwiZXhwIjoxNzExMTkyNjE3LCJzdWIiOiJzdXBlcmFkbWluQHR3ZW5kZW5vLmNvbSJ9.6VQSRCq8Zt_YzUHNHPfgs3B5TpYrGolUI2NprdfXYCw
+
+{
+  "businessName": "twendeno",
+  "userEmail": "superadmin@twendeno.com",
+  "matriculation": "256 LK 06",
+  "brand": "Toyota",
+  "model": "Corolla",
+  "mileage": 150000,
+  "buyDate": "2023-03-19",
+  "firstRegistration": "2023-03-20",
+  "price": 25000.00,
+  "sellingPrice": 30000.00,
+  "rentPrice": 100.00,
+  "deposit": 500.00,
+  "lastTechnicalInspection": "2023-03-20",
+  "nextTechnicalInspection": "2024-03-20",
+  "lastMaintenance": "2023-03-20",
+  "nextMaintenance": "2024-03-20",
+  "lastOilChange": "2023-03-20",
+  "nextOilChange": "2024-03-20",
+  "lastInsurance": "2023-03-20",
+  "newInsurance": "2024-03-20",
+  "carType": "SEDAN",
+  "fiscalPower": 6,
+  "fuelType": "GASOLINE",
+  "transmission": "TRACTION",
+  "boxType": "MANUAL",
+  "doors": 4,
+  "seats": 5,
+  "gears": 6,
+  "length": 4500.00,
+  "width": 1800.00,
+  "height": 1500.00
+}

@@ -11,7 +11,7 @@ import com.twendeno.msauth.subscription.SubscriptionRepository;
 import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.ticket.TicketRepository;
 import com.twendeno.msauth.ticket.entity.Ticket;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

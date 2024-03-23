@@ -3,6 +3,10 @@ package com.twendeno.msauth.shared;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class Utils {
 
@@ -57,5 +61,11 @@ public class Utils {
         }
 
         return reference.toString();
+    }
+
+    public static Instant convertDateToInstant(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
 }

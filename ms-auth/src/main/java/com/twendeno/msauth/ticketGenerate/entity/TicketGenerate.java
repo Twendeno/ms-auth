@@ -4,7 +4,7 @@ package com.twendeno.msauth.ticketGenerate.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.twendeno.msauth.model.AbstractEntity;
 import com.twendeno.msauth.ticket.entity.Ticket;
-import com.twendeno.msauth.user.User;
+import com.twendeno.msauth.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
