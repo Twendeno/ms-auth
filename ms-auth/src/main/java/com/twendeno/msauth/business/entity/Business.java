@@ -1,10 +1,14 @@
 package com.twendeno.msauth.business.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import com.twendeno.msauth.user.entity.User;
+import com.twendeno.msauth.userBusiness.entity.UserBusiness;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -37,5 +41,7 @@ public class Business extends AbstractEntity {
 
     @Column(unique = true)
     private String SIRET;
+
+    private boolean essay = false;
 
 }

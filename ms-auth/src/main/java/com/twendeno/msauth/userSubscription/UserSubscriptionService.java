@@ -1,6 +1,8 @@
 package com.twendeno.msauth.userSubscription;
 
+import com.twendeno.msauth.advice.EntityNotFoundException;
 import com.twendeno.msauth.shared.Utils;
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.subscription.SubscriptionRepository;
 import com.twendeno.msauth.subscription.entity.Subscription;
 import com.twendeno.msauth.user.entity.User;
@@ -11,6 +13,7 @@ import com.twendeno.msauth.userSubscription.entity.UserSubscription;
 import com.twendeno.msauth.validation.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +34,12 @@ public class UserSubscriptionService {
     private final NotificationService notificationService;
 
 
-    public void save(CreateUserSubscriptionDto userSubscriptionDto) {
+    public ApiResponse<UserSubscription> save(CreateUserSubscriptionDto userSubscriptionDto) {
         // Check if the user exists
         User user = this.userRepository.findByEmail(userSubscriptionDto.email()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Check if the subscription exists
-        Subscription subscription = this.subscriptionRepository.findByName(userSubscriptionDto.subscriptionName()).orElseThrow(() -> new RuntimeException("Subscription not found"));
+        Subscription subscription = this.subscriptionRepository.findByName(userSubscriptionDto.subscriptionName()).orElseThrow(() -> new EntityNotFoundException("Subscription not found"));
 
         // Generate subscription reference
         String subscriptionReference = Utils.generateSubscriptionReference();
@@ -51,13 +54,27 @@ public class UserSubscriptionService {
 
         // Send notification
         this.notificationService.sendMailForSubscriptionWithAttachment(user,subscription);
+
+        return ApiResponse.<UserSubscription>builder()
+                .data(saved)
+                .message("Subscription created successfully")
+                .status(HttpStatus.CREATED.getReasonPhrase())
+                .code(HttpStatus.CREATED.value())
+                .build();
     }
 
-    public List<UserSubscription> getUserSubscription() {
-        return this.userSubscriptionRepository.findAll();
+    public ApiResponse<List<UserSubscription>> getUserSubscription() {
+        List<UserSubscription> userSubscriptions = this.userSubscriptionRepository.findAll();
+
+        return ApiResponse.<List<UserSubscription>>builder()
+                .data(userSubscriptions)
+                .message("User subscriptions retrieved successfully")
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .build();
     }
 
-    public void activateSubscription(ActivateUserSubscriptionDto activateUserSubscriptionDto) {
+    public ApiResponse<String> activateSubscription(ActivateUserSubscriptionDto activateUserSubscriptionDto) {
 
         UserSubscription userSubscription = this.userSubscriptionRepository.findByReference(activateUserSubscriptionDto.reference()).orElseThrow(() -> new RuntimeException("Subscription not found"));
 
@@ -72,7 +89,12 @@ public class UserSubscriptionService {
             if (before) {
                 userSubscription.setExpired(true);
                 this.userSubscriptionRepository.save(userSubscription);
-                return;
+                return ApiResponse.<String>builder()
+                        .data(null)
+                        .message("Subscription expired")
+                        .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .build();
             }
         }
 
@@ -93,5 +115,12 @@ public class UserSubscriptionService {
         }
 
         this.userSubscriptionRepository.save(userSubscription);
+
+        return ApiResponse.<String>builder()
+                .data(null)
+                .message("Subscription activated successfully")
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .build();
     }
 }

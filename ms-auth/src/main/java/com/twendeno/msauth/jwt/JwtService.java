@@ -1,6 +1,7 @@
 package com.twendeno.msauth.jwt;
 
 import com.twendeno.msauth.refreshToken.RefreshToken;
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.auth.AuthService;
 import com.twendeno.msauth.auth.dto.RefreshTokenDto;
@@ -13,6 +14,7 @@ import io.jsonwebtoken.security.SignatureException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -133,14 +135,21 @@ public class JwtService {
                 .getBody();
     }
 
-    public void logout() {
+    public ApiResponse<String> logout() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Jwt jwt = this.jwtRepository.findUserValidToken(user.getEmail(), false, false).orElseThrow(() -> new JwtException("Token invalid"));
 
         jwt.setExpired(true);
         jwt.setDisable(true);
 
-        this.jwtRepository.save(jwt);
+        Jwt save = this.jwtRepository.save(jwt);
+
+        return ApiResponse.<String>builder()
+                .status(HttpStatus.OK.getReasonPhrase().toUpperCase())
+                .code(HttpStatus.OK.value())
+                .message("User logged out")
+                .data(null)
+                .build();
     }
 
     @Scheduled(cron = "0 0 0 * * *")

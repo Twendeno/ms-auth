@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/v1/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "b9b2e3c6-df5a-42ed-9179-545a4850a943"
+}
+
+###

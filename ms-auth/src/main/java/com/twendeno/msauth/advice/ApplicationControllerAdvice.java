@@ -8,6 +8,8 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,15 +22,38 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public @ResponseBody ProblemDetail methodArgumentNotValidException(LockedException e) {
+    public @ResponseBody ProblemDetail methodArgumentNotValidException(MethodArgumentNotValidException  e) {
 
         log.error("MethodArgumentNotValidException: {}", e.getMessage());
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "Check your email to activate your account.");
-        problemDetail.setProperty("error", "Account locked");
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Check your request body.");
+
+
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName;
+            try {
+                fieldName = ((FieldError) error).getField();
+
+            } catch (ClassCastException ex) {
+                fieldName = error.getObjectName();
+            }
+            String message = error.getDefaultMessage();
+            problemDetail.setProperty(fieldName, message);
+        });
+
+
+        return problemDetail;
+    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    public @ResponseBody ProblemDetail usernameNotFoundException(UsernameNotFoundException e) {
+
+        log.error("BadCredentialsException: {}", e.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "User not found.");
+        problemDetail.setProperty("error", "not_found");
 
         return problemDetail;
     }
@@ -38,8 +63,8 @@ public class ApplicationControllerAdvice {
 
         log.error("BadCredentialsException: {}", e.getMessage());
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, "Check your email to activate your account.");
-        problemDetail.setProperty("error", "Account locked");
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Check your email to activate your account.");
+        problemDetail.setProperty("error", "unauthorized");
 
         return problemDetail;
     }
@@ -58,6 +83,29 @@ public class ApplicationControllerAdvice {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         problemDetail.setProperty("error", "Unauthorized");
         return problemDetail;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(value = EmailAlreadyExistsException.class)
+    public @ResponseBody ProblemDetail emailAlreadyExistsException(EmailAlreadyExistsException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Email already exists");
+        problemDetail.setProperty("error", "Unauthorized");
+        return problemDetail;
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public @ResponseBody ProblemDetail entityNotFoundException(EntityNotFoundException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
+        problemDetail.setProperty("error", "Not found");
+        return problemDetail;
+    }
+
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    @ExceptionHandler(value = RuntimeException.class)
+    public @ResponseBody ProblemDetail runtimeException(RuntimeException e) {
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.REQUEST_TIMEOUT, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

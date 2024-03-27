@@ -3,7 +3,7 @@ package com.twendeno.msauth.userLicense.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.license.License;
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +30,7 @@ public class UserLicense extends AbstractEntity {
 
 
     @Column(unique = true)
+    @JsonIgnore
     private String key;
     private boolean active = false;
     private boolean expired = false;

@@ -1,6 +1,6 @@
 package com.twendeno.msauth.subscription.entity;
 
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;

@@ -1,6 +1,6 @@
 package com.twendeno.msauth.refreshToken;
 
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import jakarta.persistence.Entity;
 import lombok.*;
 

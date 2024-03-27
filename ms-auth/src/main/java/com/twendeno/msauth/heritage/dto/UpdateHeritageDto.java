@@ -1,7 +1,12 @@
 package com.twendeno.msauth.heritage.dto;
 
+import jakarta.validation.constraints.Pattern;
+
 public record UpdateHeritageDto(
+
+        @Pattern(regexp = "(^[A-Za-z0-9+_.-]+@twendeno.com)|([^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+)", message = "Invalid email")
         String userEmail,
+        @Pattern(regexp = "^[0-9]{3}-[A-Z]{2}-[0-9]$", message = "Invalid matriculation")
         String matriculation,
         String buyDate,
         String firstRegistration,
