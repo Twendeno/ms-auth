@@ -38,9 +38,9 @@ public class SecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers(HttpMethod.POST, "/signup").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/sign-up").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/activation").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/signin").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/sign-in").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/new-password").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/password-reset").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/refresh-token").permitAll()

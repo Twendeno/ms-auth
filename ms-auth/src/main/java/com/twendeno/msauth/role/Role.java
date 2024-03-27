@@ -1,6 +1,6 @@
 package com.twendeno.msauth.role;
 
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

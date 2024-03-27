@@ -1,10 +1,12 @@
 package com.twendeno.msauth.ticket;
 
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.ticket.dto.CreateTicketDto;
 import com.twendeno.msauth.ticket.dto.UpdateTicketDto;
 import com.twendeno.msauth.ticket.entity.Ticket;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,37 +19,37 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTicket(@RequestBody CreateTicketDto ticketDto) {
-        ticketService.save(ticketDto);
+    public ResponseEntity<ApiResponse<Ticket>> createTicket(@RequestBody CreateTicketDto ticketDto) {
+        return new ResponseEntity<>(ticketService.save(ticketDto), HttpStatus.CREATED);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Ticket> getTickets() {
-        return ticketService.findAll();
+    public ResponseEntity<ApiResponse<List<Ticket>>> getTickets() {
+        return ResponseEntity.ok(ticketService.findAll());
     }
 
     @GetMapping("/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket getTicket(@PathVariable("name") String name) {
-        return ticketService.findByName(name);
+    public ResponseEntity<ApiResponse<Ticket>> getTicket(@PathVariable("name") String name) {
+        return ResponseEntity.ok(ticketService.findByName(name));
     }
 
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTicket(@PathVariable("uuid") String uuid) {
-        ticketService.deleteById(uuid);
+    public ResponseEntity<ApiResponse<String>> deleteTicket(@PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok(ticketService.deleteById(uuid));
     }
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket getTicketById(@PathVariable("uuid") String uuid) {
-        return ticketService.findById(uuid);
+    public ResponseEntity<ApiResponse<Ticket>> getTicketById(@PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok(ticketService.findById(uuid));
     }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Ticket updateTicket(@RequestBody UpdateTicketDto ticketDto, @PathVariable("uuid") String uuid) {
-        return ticketService.update(ticketDto, uuid);
+    public ResponseEntity<ApiResponse<Ticket>> updateTicket(@RequestBody UpdateTicketDto ticketDto, @PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok(ticketService.update(ticketDto, uuid));
     }
 }

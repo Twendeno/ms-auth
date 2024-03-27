@@ -1,6 +1,6 @@
-package com.twendeno.msauth.privilege;
+package com.twendeno.msauth.privilege.entity;
 
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import com.twendeno.msauth.role.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

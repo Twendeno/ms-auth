@@ -1,4 +1,13 @@
 package com.twendeno.msauth.auth.dto;
 
-public record RefreshTokenDto(String refreshToken) {
+import jakarta.validation.constraints.NotBlank;
+
+public record RefreshTokenDto(
+        @NotBlank(message = "Refresh token is required")
+        String refreshToken
+) {
+    @Override
+    public String refreshToken() {
+        return refreshToken.trim();
+    }
 }

@@ -3,6 +3,7 @@ package com.twendeno.msauth.privilege;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum PrivilegeType {
 
@@ -25,9 +26,12 @@ public enum PrivilegeType {
 
     SELLER_CREATE,
     SELLER_READ,
+
+    DRIVER_CREATE,
+    DRIVER_READ,
+
     USER_READ;
 
 
-    @Getter
     private String privilegeName;
 }

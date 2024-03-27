@@ -1,15 +1,18 @@
 package com.twendeno.msauth.userLicense;
 
+import com.twendeno.msauth.advice.EntityNotFoundException;
 import com.twendeno.msauth.business.BusinessRepository;
 import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.license.LicenseRepository;
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.user.entity.User;
 import com.twendeno.msauth.userLicense.dto.ActivateLicenseDto;
 import com.twendeno.msauth.userLicense.dto.UserLicenseDto;
 import com.twendeno.msauth.userLicense.entity.UserLicense;
 import com.twendeno.msauth.validation.NotificationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,16 +37,16 @@ public class UserLicenseService {
     private final BusinessRepository businessRepository;
     private final NotificationService notificationService;
 
-    public void save(UserLicenseDto userLicenseDto) {
+    public ApiResponse<UserLicense> save(UserLicenseDto userLicenseDto) {
 
         // Check if the business exists
-        Business business = this.businessRepository.findByName(userLicenseDto.businessName()).orElseThrow(() -> new RuntimeException("User not found"));
+        Business business = this.businessRepository.findByName(userLicenseDto.businessName()).orElseThrow(() -> new EntityNotFoundException("Business not found"));
 
         // Get the user
         User user = business.getUser();
 
         // Check if the license exists
-        License license = this.licenseRepository.findByName(userLicenseDto.licenseName()).orElseThrow(() -> new RuntimeException("License not found"));
+        License license = this.licenseRepository.findByName(userLicenseDto.licenseName()).orElseThrow(() -> new EntityNotFoundException("License not found"));
 
         // Generate license key
         String licenseKey = this.generateLicenseKey();
@@ -58,13 +61,27 @@ public class UserLicenseService {
 
         // Send notification
         this.notificationService.sendMailForLicenseWithAttachment(user, licenseKey, license);
+
+        return ApiResponse.<UserLicense>builder()
+                .message("License saved successfully")
+                .status(HttpStatus.CREATED.getReasonPhrase())
+                .code(HttpStatus.CREATED.value())
+                .data(saved)
+                .build();
     }
 
-    public List<UserLicense> getUserLicense() {
-        return this.userLicenseRepository.findAll();
+    public ApiResponse<List<UserLicense>> getUserLicense() {
+        List<UserLicense> userLicenses = this.userLicenseRepository.findAll();
+
+        return ApiResponse.<List<UserLicense>>builder()
+                .message("User licenses retrieved successfully")
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .data(userLicenses)
+                .build();
     }
 
-    public void activateLicense(ActivateLicenseDto activateLicenseDto) {
+    public ApiResponse<String> activateLicense(ActivateLicenseDto activateLicenseDto) {
         String key = this.readFile(activateLicenseDto.key());
 
         UserLicense userLicense = this.userLicenseRepository.findByKey(key).orElseThrow(() -> new RuntimeException("License not found"));
@@ -80,7 +97,13 @@ public class UserLicenseService {
             if (before) {
                 userLicense.setExpired(true);
                 this.userLicenseRepository.save(userLicense);
-                return;
+
+                return ApiResponse.<String>builder()
+                        .message("License expired")
+                        .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .data(null)
+                        .build();
             }
         }
 
@@ -108,6 +131,13 @@ public class UserLicenseService {
             // Set Notification
             this.notificationService.sendActivationEmail(userLicense);
         }
+
+        return ApiResponse.<String>builder()
+                .message("License activated successfully")
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .data(null)
+                .build();
     }
 
 

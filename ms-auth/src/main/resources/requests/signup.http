@@ -1,12 +1,12 @@
 # User
 
-POST http://localhost:8080/api/v1/signup
+POST http://localhost:8080/api/v1/sign-up
 Content-Type: application/json
 
 {
   "name": "John Doe",
   "email": "jd@mail.com",
-  "password": "password1234",
+  "password": "P@SSword12345",
   "role": {
     "name": "USER"
   }
@@ -16,13 +16,13 @@ Content-Type: application/json
 
 # Admin
 
-POST http://localhost:8080/api/v1/signup
+POST http://localhost:8080/api/v1/sign-up
 Content-Type: application/json
 
 {
   "name": "admin",
   "email": "admin@mail.com",
-  "password": "password1234",
+  "password": "P@SSword12345",
   "role": {
     "name": "ADMIN"
   }
@@ -32,13 +32,13 @@ Content-Type: application/json
 
 # Tenant
 
-POST http://localhost:8080/api/v1/signup
+POST http://localhost:8080/api/v1/sign-up
 Content-Type: application/json
 
 {
   "name": "tenant",
   "email": "tenant@mail.com",
-  "password": "password1234",
+  "password": "P@SSword12345",
   "role": {
     "name": "TENANT"
   }
@@ -48,15 +48,31 @@ Content-Type: application/json
 
 # Dev
 
-POST http://localhost:8080/api/v1/signup
+POST http://localhost:8080/api/v1/sign-up
 Content-Type: application/json
 
 {
   "name": "dev",
   "email": "dev@mail.com",
-  "password": "password1234",
+  "password": "P@SSword12345",
   "role": {
     "name": "DEV"
+  }
+}
+
+###
+
+# DRIVER
+
+POST http://localhost:8080/api/v1/sign-up
+Content-Type: application/json
+
+{
+  "name": "driver",
+  "email": "driver@mail.com",
+  "password": "P@SSword12345",
+  "role": {
+    "name": "DRIVER"
   }
 }
 

@@ -1,5 +1,6 @@
 package com.twendeno.msauth.heritage;
 
+import com.twendeno.msauth.advice.EntityNotFoundException;
 import com.twendeno.msauth.business.BusinessRepository;
 import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.heritage.dto.CreateHeritageDto;
@@ -11,10 +12,12 @@ import com.twendeno.msauth.heritage.model.CarType;
 import com.twendeno.msauth.heritage.model.FuelType;
 import com.twendeno.msauth.heritage.model.TransmissionType;
 import com.twendeno.msauth.shared.Utils;
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.user.UserRepository;
 import com.twendeno.msauth.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +33,9 @@ public class HeritageService {
     private final BusinessRepository businessRepository;
     private final UserRepository userRepository;
 
-    public Heritage createHeritage(CreateHeritageDto createHeritageDto) {
+    public ApiResponse<Heritage> createHeritage(CreateHeritageDto createHeritageDto) {
         // Get Business by name
-        Business business = businessRepository.findByName(createHeritageDto.businessName()).orElseThrow(() -> new RuntimeException("Business not found"));
+        Business business = businessRepository.findByName(createHeritageDto.businessName()).orElseThrow(() -> new EntityNotFoundException("Business not found"));
 
         // Get User by email
         User user = userRepository.findByEmail(createHeritageDto.userEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -50,11 +53,18 @@ public class HeritageService {
                 .model(createHeritageDto.model())
                 .mileage(createHeritageDto.mileage())
                 .build();
-        return heritageRepository.save(heritage);
+        heritage = heritageRepository.save(heritage);
+
+        return ApiResponse.<Heritage>builder()
+                .status(HttpStatus.CREATED.getReasonPhrase())
+                .code(HttpStatus.CREATED.value())
+                .message("Heritage created successfully")
+                .data(heritage)
+                .build();
     }
 
-    public Heritage updateHeritage(String uuid, UpdateHeritageDto updateHeritageDto) {
-        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Heritage not found"));
+    public ApiResponse<Heritage> updateHeritage(String uuid, UpdateHeritageDto updateHeritageDto) {
+        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new EntityNotFoundException("Heritage not found"));
 
         // Get User by email
         User user = userRepository.findByEmail(updateHeritageDto.userEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -98,11 +108,18 @@ public class HeritageService {
         heritage.setWidth(updateHeritageDto.width());
         heritage.setHeight(updateHeritageDto.height());
 
-        return heritageRepository.save(heritage);
+        heritage = heritageRepository.save(heritage);
+
+        return ApiResponse.<Heritage>builder()
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .message("Heritage updated successfully")
+                .data(heritage)
+                .build();
     }
 
-    public Heritage updateEmergencyHeritage(String uuid, UpdateEmergencyHeritageDto emergencyHeritageDto) {
-        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Heritage not found"));
+    public ApiResponse<Heritage> updateEmergencyHeritage(String uuid, UpdateEmergencyHeritageDto emergencyHeritageDto) {
+        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new EntityNotFoundException("Heritage not found"));
 
         heritage.setAccident(emergencyHeritageDto.accident());
         heritage.setBreakdown(emergencyHeritageDto.breakdown());
@@ -110,24 +127,56 @@ public class HeritageService {
         heritage.setTechnicalInspection(emergencyHeritageDto.technicalInspection());
         heritage.setOilChange(emergencyHeritageDto.oilChange());
 
-        return heritageRepository.save(heritage);
+        heritage = heritageRepository.save(heritage);
+
+        return ApiResponse.<Heritage>builder()
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .message("Heritage updated successfully")
+                .data(heritage)
+                .build();
     }
 
-    public void deleteHeritage(String uuid) {
-        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Heritage not found"));
+    public ApiResponse<String> deleteHeritage(String uuid) {
+        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new EntityNotFoundException("Heritage not found"));
         heritageRepository.delete(heritage);
+        return ApiResponse.<String>builder()
+                .status(HttpStatus.NO_CONTENT.getReasonPhrase())
+                .code(HttpStatus.NO_CONTENT.value())
+                .message("Heritage deleted successfully")
+                .data("Heritage deleted successfully")
+                .build();
     }
 
-    public List<Heritage> getAllHeritages() {
-        return heritageRepository.findAll();
+    public ApiResponse<List<Heritage>> getAllHeritages() {
+        List<Heritage> heritages = heritageRepository.findAll();
+
+        return ApiResponse.<List<Heritage>>builder()
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .message("Heritages retrieved successfully")
+                .data(heritages)
+                .build();
     }
 
-    public Heritage getHeritage(String uuid) {
-        return heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Heritage not found"));
+    public ApiResponse<Heritage> getHeritage(String uuid) {
+        Heritage heritage = heritageRepository.findById(UUID.fromString(uuid)).orElseThrow(() -> new EntityNotFoundException("Heritage not found"));
+        return ApiResponse.<Heritage>builder()
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .message("Heritage retrieved successfully")
+                .data(heritage)
+                .build();
     }
 
-    public Heritage getHeritageByReference(String reference) {
-        return heritageRepository.findByReference(reference).orElseThrow(() -> new RuntimeException("Heritage not found"));
+    public ApiResponse<Heritage> getHeritageByReference(String reference) {
+        Heritage heritage= heritageRepository.findByReference(reference).orElseThrow(() -> new EntityNotFoundException("Heritage not found"));
+        return ApiResponse.<Heritage>builder()
+                .status(HttpStatus.OK.getReasonPhrase())
+                .code(HttpStatus.OK.value())
+                .message("Heritage retrieved successfully")
+                .data(heritage)
+                .build();
     }
 
     private CarType getCarType(String carType) {

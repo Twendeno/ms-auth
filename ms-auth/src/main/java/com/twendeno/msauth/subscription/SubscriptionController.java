@@ -1,11 +1,14 @@
 package com.twendeno.msauth.subscription;
 
+import com.twendeno.msauth.shared.model.ApiResponse;
 import com.twendeno.msauth.subscription.dto.CreateSubscriptionDto;
 import com.twendeno.msauth.subscription.dto.UpdateSubscriptionDto;
 import com.twendeno.msauth.subscription.entity.Subscription;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,31 +22,31 @@ public class SubscriptionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Subscription createSubscription(@RequestBody CreateSubscriptionDto subscriptionDto) {
-        return subscriptionService.createSubscription(subscriptionDto);
+    public ResponseEntity<ApiResponse<Subscription>> createSubscription(@Valid @RequestBody CreateSubscriptionDto subscriptionDto) {
+        return new ResponseEntity<>(subscriptionService.createSubscription(subscriptionDto), HttpStatus.CREATED);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Subscription> getSubscriptions() {
-        return subscriptionService.getSubscriptions();
+    public ResponseEntity<ApiResponse<List<Subscription>>> getSubscriptions() {
+        return ResponseEntity.ok(subscriptionService.getSubscriptions());
     }
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Subscription getSubscriptionById(@PathVariable("uuid") String uuid) {
-        return subscriptionService.getSubscriptionById(uuid);
+    public ResponseEntity<ApiResponse<Subscription>> getSubscriptionById(@PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok(subscriptionService.getSubscriptionById(uuid));
     }
 
     @DeleteMapping("/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubscription(@PathVariable("uuid") String uuid) {
-        subscriptionService.deleteSubscription(uuid);
+    public ResponseEntity<ApiResponse<String>> deleteSubscription(@PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok(subscriptionService.deleteSubscription(uuid));
     }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public Subscription updateSubscription(@PathVariable("uuid") String uuid, @RequestBody UpdateSubscriptionDto subscriptionDto) {
-        return subscriptionService.updateSubscription(uuid, subscriptionDto);
+    public ResponseEntity<ApiResponse<Subscription>> updateSubscription(@PathVariable("uuid") String uuid, @RequestBody UpdateSubscriptionDto subscriptionDto) {
+        return ResponseEntity.ok(subscriptionService.updateSubscription(uuid, subscriptionDto));
     }
 }

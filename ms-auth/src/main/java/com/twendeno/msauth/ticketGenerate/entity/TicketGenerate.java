@@ -2,7 +2,7 @@ package com.twendeno.msauth.ticketGenerate.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import com.twendeno.msauth.ticket.entity.Ticket;
 import com.twendeno.msauth.user.entity.User;
 import jakarta.persistence.CascadeType;

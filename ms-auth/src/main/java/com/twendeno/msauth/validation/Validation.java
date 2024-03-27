@@ -1,6 +1,6 @@
 package com.twendeno.msauth.validation;
 
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import com.twendeno.msauth.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

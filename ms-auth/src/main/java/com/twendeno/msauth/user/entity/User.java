@@ -1,14 +1,17 @@
 package com.twendeno.msauth.user.entity;
 
 
-import com.twendeno.msauth.model.AbstractEntity;
 import com.twendeno.msauth.role.Role;
+import com.twendeno.msauth.shared.model.AbstractEntity;
+import com.twendeno.msauth.userBusiness.entity.UserBusiness;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @Setter
@@ -19,6 +22,7 @@ import java.util.Collection;
 @Table(name = "users")
 public class User extends AbstractEntity implements UserDetails {
 
+    @Column(columnDefinition = "VARCHAR(50)")
     private String name;
 
     @Column(unique = true)

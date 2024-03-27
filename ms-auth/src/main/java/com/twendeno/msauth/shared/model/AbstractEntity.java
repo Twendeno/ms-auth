@@ -1,4 +1,4 @@
-package com.twendeno.msauth.model;
+package com.twendeno.msauth.shared.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;

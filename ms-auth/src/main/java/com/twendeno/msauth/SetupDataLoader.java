@@ -2,7 +2,7 @@ package com.twendeno.msauth;
 
 import com.twendeno.msauth.license.License;
 import com.twendeno.msauth.license.LicenseRepository;
-import com.twendeno.msauth.privilege.Privilege;
+import com.twendeno.msauth.privilege.entity.Privilege;
 import com.twendeno.msauth.privilege.PrivilegeRepository;
 import com.twendeno.msauth.role.Role;
 import com.twendeno.msauth.role.RoleRepository;
@@ -64,11 +64,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createRoleIfNotFound(RoleType.DEV);
 
         // Create initial privileges on database
-        Role superAdminRole = roleRepository.findByName(RoleType.SUPER_ADMIN).get();
-        Role adminRole = roleRepository.findByName(RoleType.ADMIN).get();
-        Role userRole = roleRepository.findByName(RoleType.USER).get();
-        Role devRole = roleRepository.findByName(RoleType.DEV).get();
-        Role tenantRole = roleRepository.findByName(RoleType.TENANT).get();
+        Role superAdminRole = roleRepository.findByName(RoleType.SUPER_ADMIN).orElseThrow(()-> new RuntimeException("Super Admin Role not found"));
+        Role adminRole = roleRepository.findByName(RoleType.ADMIN).orElseThrow(()-> new RuntimeException("Admin Role not found"));
+        Role userRole = roleRepository.findByName(RoleType.USER).orElseThrow(()-> new RuntimeException("User Role not found"));
+        Role devRole = roleRepository.findByName(RoleType.DEV).orElseThrow(()-> new RuntimeException("Dev Role not found"));
+        Role tenantRole = roleRepository.findByName(RoleType.TENANT).orElseThrow(()-> new RuntimeException("Tenant Role not found"));
 
         List<Privilege> superAdminPrivileges = RoleType.SUPER_ADMIN.getPrivileges().stream()
                 .map(privilegeType -> createPrivilegeIfNotFound(privilegeType.name(), superAdminRole)).toList();

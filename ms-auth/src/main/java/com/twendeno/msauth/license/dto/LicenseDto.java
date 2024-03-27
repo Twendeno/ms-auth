@@ -1,4 +1,9 @@
 package com.twendeno.msauth.license.dto;
 
-public record LicenseDto(String name, float price, int duration) {
+import jakarta.validation.constraints.NotBlank;
+
+public record LicenseDto(
+        @NotBlank(message = "Name is required")
+        String name,
+        float price, int duration) {
 }

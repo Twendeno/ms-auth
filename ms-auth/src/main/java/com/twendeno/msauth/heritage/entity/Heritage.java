@@ -3,7 +3,7 @@ package com.twendeno.msauth.heritage.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.twendeno.msauth.business.entity.Business;
 import com.twendeno.msauth.heritage.model.*;
-import com.twendeno.msauth.model.AbstractEntity;
+import com.twendeno.msauth.shared.model.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

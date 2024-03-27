@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
 @AllArgsConstructor
 public enum RoleType {
     SUPER_ADMIN(
@@ -48,13 +49,18 @@ public enum RoleType {
                     PrivilegeType.SELLER_READ
             )
     ),
+    DRIVER(
+            Set.of(
+                    PrivilegeType.DRIVER_CREATE,
+                    PrivilegeType.DRIVER_READ
+            )
+    ),
     TENANT(
             Set.of(
                     PrivilegeType.TENANT_CREATE
             )
     );
 
-    @Getter
     private final Set<PrivilegeType> privileges;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
